@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : MonoBehaviour
+public class CardView : MonoBehaviour        //TempCard prefab이 나중에 CardData를 참조할 수 있도록 하는 CardView.cs (3주차 카드 시스템 구현때 TempCard prefab에 붙일 스크립트)
 {
-    [Header("카드 데이터")]
-    public CardData cardData;
+    public CardData cardData;      // 이 카드의 데이터
 
-    [Header("UI 연결")]
-    public Image cardImage;
-    public Text cardNameText;
+    public Image cardImage;        // 카드 이미지
+    public Text cardNameText;      // 카드 이름 텍스트
 
     public void Setup(CardData data)
     {
@@ -19,21 +17,5 @@ public class CardView : MonoBehaviour
 
         if (cardNameText != null)
             cardNameText.text = data.cardName;
-    }
-
-    // CardTurn.cs의 OnClickCard()와 연결될 부분
-    public SuitType GetSuit()
-    {
-        return cardData.suit;
-    }
-
-    public int GetAttack()
-    {
-        return cardData.attackPower;
-    }
-
-    public int GetHeal()
-    {
-        return cardData.healAmount;
     }
 }
