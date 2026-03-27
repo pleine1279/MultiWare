@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : MonoBehaviour        //TempCard prefab이 나중에 CardData를 참조할 수 있도록 하는 CardView.cs (3주차 카드 시스템 구현때 TempCard prefab에 붙일 스크립트)
+public class CardView : MonoBehaviour               //TempCard prefab이 나중에 이 CardData를 참조할 수 있도록 하는 예시 코드
 {
     public CardData cardData;      // 이 카드의 데이터
 
