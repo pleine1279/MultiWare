@@ -19,4 +19,4 @@ MonoBehaviour:
   healAmount: 0
   goldAmount: 0
   buffValue: 4
-  cardSprite: {fileID: 0}
+  cardSprite: {fileID: 21300000, guid: 039d0cadb0b15eb4f870723a10fb23c6, type: 3}
