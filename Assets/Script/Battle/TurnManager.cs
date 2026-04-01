@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class TurnManager : MonoBehaviour
 {
@@ -11,9 +12,9 @@ public class TurnManager : MonoBehaviour
     [Header("UI")]
     public CanvasGroup inputBlocker;
     public Button endTurnButton;
-
+    public Player player;
     [Header("Enemy")]
-    public EnemyController enemy;
+    private EnemyController[] enemies;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        enemies = FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
         StartPlayerTurn();
     }
 
@@ -36,16 +38,18 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator EnemyTurnRoutine()
     {
-        currentState = GameState.Busy;
+        currentState = GameState.EnemyTurn;
 
-        // 입력 막기
         SetInputBlock(true);
         endTurnButton.interactable = false;
 
         Debug.Log("적 턴 시작");
 
-        // 적 행동 실행
-        yield return StartCoroutine(enemy.EnemyAction());
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy != null)
+                yield return StartCoroutine(enemy.EnemyAction());
+        }
 
         Debug.Log("적 턴 종료");
 
@@ -56,7 +60,9 @@ public class TurnManager : MonoBehaviour
     {
         currentState = GameState.PlayerTurn;
 
-        // 입력 허용
+        player.OnTurnStart(); // 플레이어 유물 발동
+
+        // 입력 막기 비활성화
         SetInputBlock(false);
         endTurnButton.interactable = true;
 

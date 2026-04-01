@@ -2,15 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Monster : MonoBehaviour, IDropHandler
+public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 {
-    [Header("Monster Settings")]
-    public int maxHP = 3;
+    // 몬스터 채력 및 카드로 인한 데미지
+    public MonsterData Data;
     private int currentHP;
 
     void Awake()
     {
-        currentHP = maxHP;
+        currentHP = Data.maxHP;
+    }
+    public void TakeDamage(float damage)
+    {
+        currentHP -= (int)damage;
     }
     public void OnDrop(PointerEventData eventData)
     {
@@ -45,6 +49,7 @@ public class Monster : MonoBehaviour, IDropHandler
     }
     void ReceiveCard(CardDrag card)
     {
+        //여기는 확장 안된 상태 카드 구현되면 해야함
         // HP 감소
         currentHP--;
 

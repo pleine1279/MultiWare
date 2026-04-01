@@ -3,6 +3,13 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
+    public Player player;
+    public MonsterData Data;
+    public float monsterdamage;
+    private void Awake()
+    {
+        monsterdamage = Data.attackDamage;
+    }
     public IEnumerator EnemyAction()
     {
         Debug.Log("적 공격 시작");
@@ -11,7 +18,8 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // 데미지 처리
-        Debug.Log("플레이어에게 데미지!");
+        DamageEffect damage = new DamageEffect(monsterdamage);
+        damage.Apply(player);
 
         yield return new WaitForSeconds(0.5f);
 
