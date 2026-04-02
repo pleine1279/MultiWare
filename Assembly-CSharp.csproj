@@ -66,9 +66,12 @@
     <Compile Include="Assets\Script\Card\CardData.cs" />
     <Compile Include="Assets\Script\Card\CardDealAnimator.cs" />
     <Compile Include="Assets\Script\Card\CardDrawer.cs" />
+    <Compile Include="Assets\Script\Card\HandResult.cs" />
     <Compile Include="Assets\Script\Card\HandRankType.cs" />
+    <Compile Include="Assets\Script\Card\CardSelectManager.cs" />
     <Compile Include="Assets\Script\Card\SuitType.cs" />
     <Compile Include="Assets\Script\Card\CardView.cs" />
+    <Compile Include="Assets\Script\Card\HandEvaluator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

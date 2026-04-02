@@ -72,17 +72,19 @@ public class CardView : MonoBehaviour, IPointerClickHandler
 
         if (isSelected)
         {
-            // CardContainer만 위로 올림
             cardContainer.anchoredPosition = new Vector2(
                 containerOriginalPos.x,
                 containerOriginalPos.y + 30
             );
+            // CardSelectManager에 선택 알림
+            CardSelectManager.Instance.SelectCard(this);
             Debug.Log($"{cardData.cardName} 선택됨");
         }
         else
         {
-            // CardContainer 원래 위치로
             cardContainer.anchoredPosition = containerOriginalPos;
+            // CardSelectManager에 해제 알림
+            CardSelectManager.Instance.DeselectCard(this);
             Debug.Log($"{cardData.cardName} 선택 해제");
         }
     }
