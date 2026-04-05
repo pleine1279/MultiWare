@@ -61,10 +61,16 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.69f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Card\DeckManager.cs" />
     <Compile Include="Assets\Script\Battle\IEffectTarget.cs" />
+    <Compile Include="Assets\Script\Card\HandManager.cs" />
+    <Compile Include="Assets\Script\Card\CardData.cs" />
+    <Compile Include="Assets\Script\Card\CardDealAnimator.cs" />
+    <Compile Include="Assets\Script\Card\CardDrawer.cs" />
     <Compile Include="Assets\Script\CardClick.cs" />
     <Compile Include="Assets\Script\Battle\Relic.cs" />
     <Compile Include="Assets\Script\Battle\DamageEffect.cs" />
+    <Compile Include="Assets\Script\Card\HandResult.cs" />
     <Compile Include="Assets\Script\CardTurn.cs" />
     <Compile Include="Assets\Script\Battle\Monster.cs" />
     <Compile Include="Assets\Script\Battle\TurnManager.cs" />
@@ -73,13 +79,18 @@
     <Compile Include="Assets\Script\CardFanEditor.cs" />
     <Compile Include="Assets\Script\Battle\MonsterData.cs" />
     <Compile Include="Assets\Script\Battle\TestRelic.cs" />
+    <Compile Include="Assets\Script\Card\HandRankType.cs" />
     <Compile Include="Assets\Script\CardDrag.cs" />
     <Compile Include="Assets\Script\Battle\EnemyController.cs" />
     <Compile Include="Assets\Script\GameState.cs" />
+    <Compile Include="Assets\Script\Card\CardSelectManager.cs" />
     <Compile Include="Assets\Script\Battle\Effect.cs" />
     <Compile Include="Assets\Script\Battle\GameManager.cs" />
     <Compile Include="Assets\Script\CardNotifier.cs" />
     <Compile Include="Assets\Script\CardSelectionManager.cs" />
+    <Compile Include="Assets\Script\Card\SuitType.cs" />
+    <Compile Include="Assets\Script\Card\CardView.cs" />
+    <Compile Include="Assets\Script\Card\HandEvaluator.cs" />
     <Compile Include="Assets\Script\Battle\HealthBar.cs" />
     <Compile Include="Assets\Script\CardHover.cs" />
     <Compile Include="Assets\Script\Battle\Player.cs" />
@@ -106,6 +117,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\2D Cards Game Art Pack\Demo\READ ME.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
