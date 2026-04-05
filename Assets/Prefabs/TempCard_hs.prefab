@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9012460683813398268}
   - component: {fileID: 3372165406026856910}
   m_Layer: 0
-  m_Name: TempCard
+  m_Name: TempCard_hs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
