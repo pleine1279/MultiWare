@@ -109,3 +109,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29ddae8c3b89da4a9274fca563f515d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalPos: {x: 0, y: 0}
+  originalParent: {fileID: 0}
+  originalScale: {x: 0, y: 0, z: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
+  originalImage: {fileID: 0}
+  isSelected: 0
+  spacingX: 50
+  spacingY: 0

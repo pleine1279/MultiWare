@@ -26,6 +26,8 @@ public class CardDrag : MonoBehaviour,
     public float spacingX = 50f;
     public float spacingY = 0f;
 
+    private CardView cardView;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -34,6 +36,8 @@ public class CardDrag : MonoBehaviour,
         originalRotation = rectTransform.localRotation; // 초기 회전 저장
         originalImage = GetComponent<Image>();
         layoutElement = GetComponent<LayoutElement>();
+
+        cardView = GetComponent<CardView>();
     }
 
     // 카드 선택 토글
@@ -42,9 +46,23 @@ public class CardDrag : MonoBehaviour,
         isSelected = !isSelected;
 
         if (isSelected)
+        {
             CardSelectionManager.Instance.Register(this);
+
+            // CardView가 있으면 CardSelectManager에도 등록
+            CardView cardView = GetComponent<CardView>();
+            if (cardView != null && CardSelectManager.Instance != null)
+                CardSelectManager.Instance.SelectCard(cardView);
+        }
         else
+        {
             CardSelectionManager.Instance.Unregister(this);
+
+            // CardView가 있으면 CardSelectManager에서도 해제
+            CardView cardView = GetComponent<CardView>();
+            if (cardView != null && CardSelectManager.Instance != null)
+                CardSelectManager.Instance.DeselectCard(cardView);
+        }
     }
 
     // 드래그 시작
@@ -148,5 +166,10 @@ public class CardDrag : MonoBehaviour,
             if (layoutElement != null)
                 layoutElement.ignoreLayout = false;
         }
+    }
+
+    public CardView GetCardView()
+    {
+        return cardView;
     }
 }

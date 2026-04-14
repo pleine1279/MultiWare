@@ -85,6 +85,7 @@
     <Compile Include="Assets\Script\GameState.cs" />
     <Compile Include="Assets\Script\Card\CardSelectManager.cs" />
     <Compile Include="Assets\Script\Battle\Effect.cs" />
+    <Compile Include="Assets\Script\Card\CardBundle.cs" />
     <Compile Include="Assets\Script\Battle\GameManager.cs" />
     <Compile Include="Assets\Script\CardNotifier.cs" />
     <Compile Include="Assets\Script\CardSelectionManager.cs" />

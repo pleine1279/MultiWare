@@ -1,10 +1,9 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 {
-    // ¸ó½ºÅÍ Ã¤·Â ¹× Ä«µå·Î ÀÎÇÑ µ¥¹ÌÁö
     public MonsterData Data;
     private int currentHP;
 
@@ -12,58 +11,131 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
     {
         currentHP = Data.maxHP;
     }
+
     public void TakeDamage(float damage)
     {
         currentHP -= (int)damage;
+        Debug.Log($"ëª¬ìŠ¤í„° HP: {currentHP}");
     }
+
     public void OnDrop(PointerEventData eventData)
     {
-        CardDrag card = eventData.pointerDrag?.GetComponent<CardDrag>();
+        // ì¹´ë“œ ë­‰íƒ±ì´ ë“œë¡­ ì²˜ë¦¬
+        CardBundle bundle = eventData.pointerDrag?.GetComponent<CardBundle>();
+        if (bundle != null)
+        {
+            Debug.Log($"ë­‰íƒ±ì´ ë“œë¡­! ì¡±ë³´: {bundle.handResult.GetRankName()}");
 
+            int totalDamage = CalculateSuitBonus(
+                bundle.cardDataList,
+                bundle.handResult.baseDamage
+            );
+
+            TakeDamage(totalDamage);
+            Debug.Log($"ëª¬ìŠ¤í„°ì—ê²Œ {totalDamage} ë°ë¯¸ì§€!");
+
+            Destroy(bundle.gameObject);
+
+            if (currentHP <= 0)
+                Die();
+            return;
+        }
+
+        // ê¸°ì¡´ ì¹´ë“œ ë“œë˜ê·¸ ë“œë¡­ ì²˜ë¦¬
+        CardDrag card = eventData.pointerDrag?.GetComponent<CardDrag>();
         if (card != null)
         {
-            Debug.Log("¸ó½ºÅÍ À§¿¡ Ä«µå µå·ÓµÊ: " + gameObject.name);
+            Debug.Log("ëª¬ìŠ¤í„° ìœ„ì— ì¹´ë“œ ë“œë¡­ë¨: " + gameObject.name);
 
-            // ¼±ÅÃµÈ Ä«µå ±×·ì °¡Á®¿À±â
-            List<CardDrag> selectedGroup = CardSelectionManager.Instance.selectedCards;
+            List<CardDrag> selectedGroup =
+                CardSelectionManager.Instance.selectedCards;
 
-            // ±×·ì ÀüÃ¼ Ã³¸®
             if (selectedGroup.Count == 0)
-            {
-                // ¼±ÅÃµÈ Ä«µå°¡ ¾øÀ¸¸é µå·¡±×µÈ Ä«µå ÇÏ³ª¸¸ Ã³¸®
                 selectedGroup = new List<CardDrag> { card };
+
+            List<CardData> cardDataList = new List<CardData>();
+            foreach (var c in selectedGroup)
+            {
+                CardView view = c.GetCardView();
+                if (view != null && view.cardData != null)
+                    cardDataList.Add(view.cardData);
+            }
+
+            if (cardDataList.Count > 0)
+            {
+                HandResult result = HandEvaluator.Evaluate(cardDataList);
+                Debug.Log($"ì¡±ë³´: {result.GetRankName()} / ê¸°ë³¸ ë°ë¯¸ì§€: {result.baseDamage}");
+
+                int totalDamage = CalculateSuitBonus(
+                    cardDataList, result.baseDamage);
+
+                TakeDamage(totalDamage);
+                Debug.Log($"ëª¬ìŠ¤í„°ì—ê²Œ {totalDamage} ë°ë¯¸ì§€!");
+            }
+            else
+            {
+                TakeDamage(10);
+                Debug.Log("ê¸°ë³¸ ë°ë¯¸ì§€ 10 ì ìš©!");
             }
 
             foreach (var c in selectedGroup)
-            {
-                // Ä«µå È¿°ú Ã³¸®
-                ReceiveCard(c);
-
-                // Ä«µå Á¦°Å
                 Destroy(c.gameObject);
-            }
 
-            // ¼±ÅÃ Ä«µå ÃÊ±âÈ­
             CardSelectionManager.Instance.Clear();
+
+            if (currentHP <= 0)
+                Die();
         }
     }
-    void ReceiveCard(CardDrag card)
+
+    int CalculateSuitBonus(List<CardData> cards, int baseDamage)
     {
-        //¿©±â´Â È®Àå ¾ÈµÈ »óÅÂ Ä«µå ±¸ÇöµÇ¸é ÇØ¾ßÇÔ
-        // HP °¨¼Ò
-        currentHP--;
+        int spadeCount = 0, heartCount = 0,
+            diamondCount = 0, cloverCount = 0;
 
-        Debug.Log($"¸ó½ºÅÍ HP °¨¼Ò! ÇöÀç HP: {currentHP}");
-
-        // 0 ÀÌÇÏÀÌ¸é Á¦°Å
-        if (currentHP <= 0)
+        foreach (CardData c in cards)
         {
-            Die();
+            switch (c.suit)
+            {
+                case SuitType.Spade: spadeCount++; break;
+                case SuitType.Heart: heartCount++; break;
+                case SuitType.Diamond: diamondCount++; break;
+                case SuitType.Clover: cloverCount++; break;
+            }
+        }
+
+        if (spadeCount >= heartCount &&
+            spadeCount >= diamondCount &&
+            spadeCount >= cloverCount)
+        {
+            int damage = baseDamage + (spadeCount * 5);
+            Debug.Log($"â™  Attack! Total DMG: {damage}");
+            return damage;
+        }
+        else if (heartCount >= spadeCount &&
+                 heartCount >= diamondCount &&
+                 heartCount >= cloverCount)
+        {
+            Debug.Log($"â™¥ Heal! {heartCount * 5} HP");
+            return 0;
+        }
+        else if (diamondCount >= spadeCount &&
+                 diamondCount >= heartCount &&
+                 diamondCount >= cloverCount)
+        {
+            Debug.Log($"â™¦ Gold! {diamondCount * 3}");
+            return baseDamage;
+        }
+        else
+        {
+            Debug.Log($"â™£ Buff! {cloverCount * 3}");
+            return baseDamage;
         }
     }
+
     void Die()
     {
-        Debug.Log("¸ó½ºÅÍ »ç¸Á!");
+        Debug.Log("ëª¬ìŠ¤í„° ì‚¬ë§!");
         Destroy(gameObject);
     }
 }
