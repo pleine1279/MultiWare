@@ -48,4 +48,11 @@ public class Player : MonoBehaviour, IEffectTarget
             relic.OnTurnStart(this);
         }
     }
+    public void Heal(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        Debug.Log($"플레이어 HP 회복! 현재 HP: {currentHealth}");
+    }
 }

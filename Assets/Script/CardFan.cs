@@ -92,4 +92,50 @@ public class CardFan : MonoBehaviour
         cardCount = 5;
         CreateCards(cardCount);
     }
+
+    public void ClearCards()
+    {
+        if (cards != null)
+        {
+            foreach (var c in cards)
+                if (c != null) Destroy(c.gameObject);
+        }
+        cards = null;
+        cardCount = 0;
+    }
+
+    // 현재 남아있는 카드 수 반환
+    public int GetCurrentCardCount()
+    {
+        if (cards == null) return 0;
+        int count = 0;
+        foreach (var c in cards)
+            if (c != null) count++;
+        return count;
+    }
+
+    public void AddCard(CardData cardData)
+    {
+        // 카드 생성
+        GameObject card = Instantiate(cardPrefab, transform);
+
+        // CardView에 데이터 연결
+        CardView cardView = card.GetComponent<CardView>();
+        if (cardView != null)
+            cardView.Setup(cardData);
+
+        if (card.GetComponent<CardHover>() == null)
+            card.AddComponent<CardHover>();
+
+        // 카드 배열에 추가
+        List<GameObject> cardList = cards != null ?
+            new List<GameObject>(cards) : new List<GameObject>();
+        cardList.RemoveAll(c => c == null);
+        cardList.Add(card);
+        cards = cardList.ToArray();
+        cardCount = cards.Length;
+
+        // 카드 재배치
+        ArrangeCards();
+    }
 }

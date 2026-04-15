@@ -59,14 +59,23 @@ public class TurnManager : MonoBehaviour
     void StartPlayerTurn()
     {
         currentState = GameState.PlayerTurn;
-
-        player.OnTurnStart(); // 플레이어 유물 발동
-
-        // 입력 막기 비활성화
+        player.OnTurnStart();
         SetInputBlock(false);
         endTurnButton.interactable = true;
 
-        cardFan.DrawStartingHand();
+        // 현재 손패 수 확인
+        int currentCount = cardFan.GetCurrentCardCount();
+        int drawCount = 5 - currentCount;
+
+        Debug.Log($"현재 손패: {currentCount}장 / 드로우할 카드: {drawCount}장");
+
+        if (drawCount > 0)
+        {
+            if (CardDealAnimator.Instance != null)
+                StartCoroutine(CardDealAnimator.Instance.DealCardsAnimation(drawCount));
+            else
+                cardFan.DrawStartingHand();
+        }
 
         Debug.Log("플레이어 턴 시작");
     }

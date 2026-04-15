@@ -104,35 +104,46 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             }
         }
 
+        // 족보 데미지는 항상 적용
+        int totalDamage = baseDamage;
+
+        // 가장 많은 문양 추가 효과 적용
         if (spadeCount >= heartCount &&
             spadeCount >= diamondCount &&
             spadeCount >= cloverCount)
         {
-            int damage = baseDamage + (spadeCount * 5);
-            Debug.Log($"♠ Attack! Total DMG: {damage}");
-            return damage;
+            // 스페이드: 추가 데미지
+            totalDamage += spadeCount * 5;
+            Debug.Log($"♠ 추가 공격! +{spadeCount * 5} / 총 데미지: {totalDamage}");
         }
         else if (heartCount >= spadeCount &&
                  heartCount >= diamondCount &&
                  heartCount >= cloverCount)
         {
-            Debug.Log($"♥ Heal! {heartCount * 5} HP");
-            return 0;
+            // 하트: 회복 + 기본 족보 데미지는 유지
+            float healAmount = heartCount * 5;
+            Player player = FindFirstObjectByType<Player>();
+            if (player != null)
+                player.Heal(healAmount);
+            Debug.Log($"♥ 회복! +{healAmount} HP / 족보 데미지: {totalDamage}");
         }
         else if (diamondCount >= spadeCount &&
                  diamondCount >= heartCount &&
                  diamondCount >= cloverCount)
         {
-            Debug.Log($"♦ Gold! {diamondCount * 3}");
-            return baseDamage;
+            // 다이아: 골드 획득
+            int goldAmount = diamondCount * 3;
+            Debug.Log($"♦ 골드 획득! +{goldAmount}");
         }
         else
         {
-            Debug.Log($"♣ Buff! {cloverCount * 3}");
-            return baseDamage;
+            // 클로버: 버프
+            int buffAmount = cloverCount * 3;
+            Debug.Log($"♣ 버프! +{buffAmount}");
         }
-    }
 
+        return totalDamage;
+    }
     void Die()
     {
         Debug.Log("몬스터 사망!");

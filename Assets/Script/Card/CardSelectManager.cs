@@ -85,6 +85,9 @@ public class CardSelectManager : MonoBehaviour
         HandResult result = HandEvaluator.Evaluate(cardDataList);
         Debug.Log($"족보 사용! {result.GetRankName()} / 데미지: {result.baseDamage}");
 
+        // 문양 시너지 효과 적용
+        ApplySuitEffect(result);
+
         // 카드 뭉탱이 생성
         CreateCardBundle(result, cardDataList);
 
@@ -100,12 +103,60 @@ public class CardSelectManager : MonoBehaviour
         UpdateUI();
     }
 
-    // 카드 뭉탱이 생성
+    private void ApplySuitEffect(HandResult result)
+    {
+        int spadeCount = 0, heartCount = 0,
+            diamondCount = 0, cloverCount = 0;
+
+        foreach (CardView cv in selectedCards)
+        {
+            switch (cv.cardData.suit)
+            {
+                case SuitType.Spade: spadeCount++; break;
+                case SuitType.Heart: heartCount++; break;
+                case SuitType.Diamond: diamondCount++; break;
+                case SuitType.Clover: cloverCount++; break;
+            }
+        }
+
+        if (spadeCount >= heartCount &&
+            spadeCount >= diamondCount &&
+            spadeCount >= cloverCount)
+        {
+            Debug.Log($"♠ 추가 공격! +{spadeCount * 5}");
+        }
+        else if (heartCount >= spadeCount &&
+                 heartCount >= diamondCount &&
+                 heartCount >= cloverCount)
+        {
+            float healAmount = heartCount * 5;
+            Player player = FindFirstObjectByType<Player>();
+            if (player != null)
+                player.Heal(healAmount);
+            Debug.Log($"♥ 회복! +{healAmount} HP");
+        }
+        else if (diamondCount >= spadeCount &&
+                 diamondCount >= heartCount &&
+                 diamondCount >= cloverCount)
+        {
+            int goldAmount = diamondCount * 3;
+
+            // GoldManager로 골드 추가
+            if (GoldManager.Instance != null)
+                GoldManager.Instance.AddGold(goldAmount);
+
+            Debug.Log($"♦ 골드 획득! +{goldAmount}");
+        }
+        else
+        {
+            Debug.Log($"♣ 버프! +{cloverCount * 3}");
+        }
+    }
+
     private void CreateCardBundle(HandResult result, List<CardData> cardDataList)
     {
         GameObject bundleObj = new GameObject("CardBundle");
 
-        // mainCanvas가 연결되어 있으면 사용, 없으면 찾기
         Canvas canvas = mainCanvas != null ?
             mainCanvas : FindFirstObjectByType<Canvas>();
 
@@ -143,50 +194,6 @@ public class CardSelectManager : MonoBehaviour
         text.color = Color.black;
 
         Debug.Log("카드 뭉탱이 생성! 몬스터에게 드래그하세요.");
-    }
-
-    private void ApplySuitEffect(HandResult result)
-    {
-        int spadeCount = 0, heartCount = 0,
-            diamondCount = 0, cloverCount = 0;
-
-        foreach (CardView cv in selectedCards)
-        {
-            switch (cv.cardData.suit)
-            {
-                case SuitType.Spade: spadeCount++; break;
-                case SuitType.Heart: heartCount++; break;
-                case SuitType.Diamond: diamondCount++; break;
-                case SuitType.Clover: cloverCount++; break;
-            }
-        }
-
-        if (spadeCount >= heartCount &&
-            spadeCount >= diamondCount &&
-            spadeCount >= cloverCount)
-        {
-            int totalDamage = result.baseDamage + (spadeCount * 5);
-            Debug.Log($"♠ Attack! Total DMG: {totalDamage}");
-        }
-        else if (heartCount >= spadeCount &&
-                 heartCount >= diamondCount &&
-                 heartCount >= cloverCount)
-        {
-            int healAmount = heartCount * 5;
-            Debug.Log($"♥ Heal! Amount: {healAmount}");
-        }
-        else if (diamondCount >= spadeCount &&
-                 diamondCount >= heartCount &&
-                 diamondCount >= cloverCount)
-        {
-            int goldAmount = diamondCount * 3;
-            Debug.Log($"♦ Gold! Amount: {goldAmount}");
-        }
-        else
-        {
-            int buffAmount = cloverCount * 3;
-            Debug.Log($"♣ Buff! Amount: {buffAmount}");
-        }
     }
 
     public List<CardView> GetSelectedCards()
