@@ -33,7 +33,12 @@ public class CardFan : MonoBehaviour
             GameObject card = Instantiate(cardPrefab, transform);
             cards[i] = card;
 
-            // CardData 자동 연결 ← 추가!
+            // CardDrag 비활성화
+            CardDrag cardDrag = card.GetComponent<CardDrag>();
+            if (cardDrag != null)
+                cardDrag.SetDraggable(false);
+
+            // CardData 자동 연결
             CardView cardView = card.GetComponent<CardView>();
             if (cardView != null)
             {
@@ -93,17 +98,6 @@ public class CardFan : MonoBehaviour
         CreateCards(cardCount);
     }
 
-    public void ClearCards()
-    {
-        if (cards != null)
-        {
-            foreach (var c in cards)
-                if (c != null) Destroy(c.gameObject);
-        }
-        cards = null;
-        cardCount = 0;
-    }
-
     // 현재 남아있는 카드 수 반환
     public int GetCurrentCardCount()
     {
@@ -114,12 +108,16 @@ public class CardFan : MonoBehaviour
         return count;
     }
 
+    // 카드 추가
     public void AddCard(CardData cardData)
     {
-        // 카드 생성
         GameObject card = Instantiate(cardPrefab, transform);
 
-        // CardView에 데이터 연결
+        // CardDrag 비활성화
+        CardDrag cardDrag = card.GetComponent<CardDrag>();
+        if (cardDrag != null)
+            cardDrag.SetDraggable(false);
+
         CardView cardView = card.GetComponent<CardView>();
         if (cardView != null)
             cardView.Setup(cardData);
@@ -127,7 +125,6 @@ public class CardFan : MonoBehaviour
         if (card.GetComponent<CardHover>() == null)
             card.AddComponent<CardHover>();
 
-        // 카드 배열에 추가
         List<GameObject> cardList = cards != null ?
             new List<GameObject>(cards) : new List<GameObject>();
         cardList.RemoveAll(c => c == null);
@@ -135,7 +132,18 @@ public class CardFan : MonoBehaviour
         cards = cardList.ToArray();
         cardCount = cards.Length;
 
-        // 카드 재배치
         ArrangeCards();
+    }
+
+    // 카드 전체 제거
+    public void ClearCards()
+    {
+        if (cards != null)
+        {
+            foreach (var c in cards)
+                if (c != null) Destroy(c.gameObject);
+        }
+        cards = null;
+        cardCount = 0;
     }
 }

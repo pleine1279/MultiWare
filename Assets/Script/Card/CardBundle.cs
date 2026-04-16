@@ -10,8 +10,13 @@ public class CardBundle : MonoBehaviour,
     private Canvas canvas;
     private CanvasGroup canvasGroup;
 
-    public HandResult handResult;           // 족보 결과
-    public List<CardData> cardDataList;     // 카드 데이터 목록
+    public HandResult handResult;
+    public List<CardData> cardDataList;
+
+    // 원래 위치 저장
+    private Vector2 originalPosition;
+    // 몬스터에 드롭됐는지 여부
+    public bool isDroppedOnMonster = false;
 
     private void Awake()
     {
@@ -33,6 +38,8 @@ public class CardBundle : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 원래 위치 저장
+        originalPosition = rectTransform.anchoredPosition;
         canvasGroup.blocksRaycasts = false;
         transform.SetAsLastSibling();
     }
@@ -47,7 +54,16 @@ public class CardBundle : MonoBehaviour,
     {
         canvasGroup.blocksRaycasts = true;
 
-        // 몬스터에 드롭 안됐으면 제거
-        Destroy(gameObject);
+        // 몬스터에 드롭됐으면 제거
+        if (isDroppedOnMonster)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            // 몬스터에 드롭 안됐으면 원래 위치로 복귀
+            rectTransform.anchoredPosition = originalPosition;
+            Debug.Log("몬스터에게 드롭하세요!");
+        }
     }
 }

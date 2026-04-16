@@ -27,6 +27,7 @@ public class CardDrag : MonoBehaviour,
     public float spacingY = 0f;
 
     private CardView cardView;
+    private bool isDraggable = false;  // ← 기본값 false
 
     void Awake()
     {
@@ -68,6 +69,9 @@ public class CardDrag : MonoBehaviour,
     // 드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 드래그 비활성화 상태면 무시
+        if (!isDraggable) return;
+
         var selected = CardSelectionManager.Instance.selectedCards;
 
         if (selected.Count == 0 || !isSelected)
@@ -117,7 +121,8 @@ public class CardDrag : MonoBehaviour,
     // 드래그 중
     public void OnDrag(PointerEventData eventData)
     {
-        
+        if (!isDraggable) return;
+
         // anchor 이동
         anchor.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
@@ -132,6 +137,8 @@ public class CardDrag : MonoBehaviour,
     // 드래그 종료
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isDraggable) return;
+
         var selected = CardSelectionManager.Instance.selectedCards;
 
         if (selected.Count == 0 || !isSelected)
@@ -171,5 +178,10 @@ public class CardDrag : MonoBehaviour,
     public CardView GetCardView()
     {
         return cardView;
+    }
+    // 드래그 활성화
+    public void SetDraggable(bool draggable)
+    {
+        isDraggable = draggable;
     }
 }

@@ -20,7 +20,6 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 
     public void OnDrop(PointerEventData eventData)
     {
-        // 카드 뭉탱이 드롭 처리
         CardBundle bundle = eventData.pointerDrag?.GetComponent<CardBundle>();
         if (bundle != null)
         {
@@ -34,54 +33,8 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             TakeDamage(totalDamage);
             Debug.Log($"몬스터에게 {totalDamage} 데미지!");
 
-            Destroy(bundle.gameObject);
-
-            if (currentHP <= 0)
-                Die();
-            return;
-        }
-
-        // 기존 카드 드래그 드롭 처리
-        CardDrag card = eventData.pointerDrag?.GetComponent<CardDrag>();
-        if (card != null)
-        {
-            Debug.Log("몬스터 위에 카드 드롭됨: " + gameObject.name);
-
-            List<CardDrag> selectedGroup =
-                CardSelectionManager.Instance.selectedCards;
-
-            if (selectedGroup.Count == 0)
-                selectedGroup = new List<CardDrag> { card };
-
-            List<CardData> cardDataList = new List<CardData>();
-            foreach (var c in selectedGroup)
-            {
-                CardView view = c.GetCardView();
-                if (view != null && view.cardData != null)
-                    cardDataList.Add(view.cardData);
-            }
-
-            if (cardDataList.Count > 0)
-            {
-                HandResult result = HandEvaluator.Evaluate(cardDataList);
-                Debug.Log($"족보: {result.GetRankName()} / 기본 데미지: {result.baseDamage}");
-
-                int totalDamage = CalculateSuitBonus(
-                    cardDataList, result.baseDamage);
-
-                TakeDamage(totalDamage);
-                Debug.Log($"몬스터에게 {totalDamage} 데미지!");
-            }
-            else
-            {
-                TakeDamage(10);
-                Debug.Log("기본 데미지 10 적용!");
-            }
-
-            foreach (var c in selectedGroup)
-                Destroy(c.gameObject);
-
-            CardSelectionManager.Instance.Clear();
+            // 몬스터에 드롭됐음을 표시
+            bundle.isDroppedOnMonster = true;
 
             if (currentHP <= 0)
                 Die();
