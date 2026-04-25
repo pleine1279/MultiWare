@@ -24,14 +24,27 @@ public class Player : MonoBehaviour, IEffectTarget
 
     public void TakeDamage(float damage)
     {
+        // 무적 상태면 피해 0 (턴 내내 유지)
+        if (BattleManager.Instance != null &&
+            BattleManager.Instance.IsInvincible())
+        {
+            Debug.Log("무적! 피해 0");
+            return;
+        }
+
+        // 약화 효과: 적 공격력 -20%
+        if (BattleManager.Instance != null &&
+            BattleManager.Instance.isWeakened)
+        {
+            damage *= 0.8f;
+            Debug.Log($"약화 효과! 받는 피해 -20% → {damage}");
+        }
+
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        // 유물 반응
         foreach (var relic in relics)
-        {
             relic.OnTakeDamage(this, damage);
-        }
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }

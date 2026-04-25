@@ -68,6 +68,7 @@
     <Compile Include="Assets\Script\Card\CardDealAnimator.cs" />
     <Compile Include="Assets\Script\Card\CardDrawer.cs" />
     <Compile Include="Assets\Script\CardClick.cs" />
+    <Compile Include="Assets\Script\Battle\BattleManager.cs" />
     <Compile Include="Assets\Script\Battle\Relic.cs" />
     <Compile Include="Assets\Script\Battle\DamageEffect.cs" />
     <Compile Include="Assets\Script\Card\HandResult.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\Script\CardFan.cs" />
     <Compile Include="Assets\Script\CardFanEditor.cs" />
     <Compile Include="Assets\Script\Battle\MonsterData.cs" />
+    <Compile Include="Assets\Script\Card\CloverChoiceUI.cs" />
     <Compile Include="Assets\Script\Battle\TestRelic.cs" />
     <Compile Include="Assets\Script\Card\HandRankType.cs" />
     <Compile Include="Assets\Script\CardDrag.cs" />

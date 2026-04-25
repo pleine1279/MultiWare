@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: monsterTest
   m_EditorClassIdentifier: 
   monsterName: monsterTest1
-  maxHP: 5
+  maxHP: 100
   attackDamage: 5

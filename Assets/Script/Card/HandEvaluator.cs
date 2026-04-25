@@ -1,54 +1,64 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class HandEvaluator
 {
-    // 선택한 카드들로 족보 판정
     public static HandResult Evaluate(List<CardData> selectedCards)
     {
         if (selectedCards == null || selectedCards.Count == 0)
             return new HandResult(HandRankType.HighCard,
-                HandResult.GetBaseDamage(HandRankType.HighCard), selectedCards);
+                HandResult.CalculateDamage(HandRankType.HighCard, selectedCards),
+                selectedCards);
 
-        // 족보 판정 (높은 순서대로 체크)
         if (IsRoyalFlush(selectedCards))
             return new HandResult(HandRankType.RoyalFlush,
-                HandResult.GetBaseDamage(HandRankType.RoyalFlush), selectedCards);
+                HandResult.CalculateDamage(HandRankType.RoyalFlush, selectedCards),
+                selectedCards);
 
         if (IsStraightFlush(selectedCards))
             return new HandResult(HandRankType.StraightFlush,
-                HandResult.GetBaseDamage(HandRankType.StraightFlush), selectedCards);
+                HandResult.CalculateDamage(HandRankType.StraightFlush, selectedCards),
+                selectedCards);
 
         if (IsFourOfAKind(selectedCards))
             return new HandResult(HandRankType.FourOfAKind,
-                HandResult.GetBaseDamage(HandRankType.FourOfAKind), selectedCards);
+                HandResult.CalculateDamage(HandRankType.FourOfAKind, selectedCards),
+                selectedCards);
 
         if (IsFullHouse(selectedCards))
             return new HandResult(HandRankType.FullHouse,
-                HandResult.GetBaseDamage(HandRankType.FullHouse), selectedCards);
+                HandResult.CalculateDamage(HandRankType.FullHouse, selectedCards),
+                selectedCards);
 
         if (IsFlush(selectedCards))
             return new HandResult(HandRankType.Flush,
-                HandResult.GetBaseDamage(HandRankType.Flush), selectedCards);
+                HandResult.CalculateDamage(HandRankType.Flush, selectedCards),
+                selectedCards);
 
         if (IsStraight(selectedCards))
             return new HandResult(HandRankType.Straight,
-                HandResult.GetBaseDamage(HandRankType.Straight), selectedCards);
+                HandResult.CalculateDamage(HandRankType.Straight, selectedCards),
+                selectedCards);
 
         if (IsThreeOfAKind(selectedCards))
             return new HandResult(HandRankType.ThreeOfAKind,
-                HandResult.GetBaseDamage(HandRankType.ThreeOfAKind), selectedCards);
+                HandResult.CalculateDamage(HandRankType.ThreeOfAKind, selectedCards),
+                selectedCards);
 
         if (IsTwoPair(selectedCards))
             return new HandResult(HandRankType.TwoPair,
-                HandResult.GetBaseDamage(HandRankType.TwoPair), selectedCards);
+                HandResult.CalculateDamage(HandRankType.TwoPair, selectedCards),
+                selectedCards);
 
         if (IsOnePair(selectedCards))
             return new HandResult(HandRankType.OnePair,
-                HandResult.GetBaseDamage(HandRankType.OnePair), selectedCards);
+                HandResult.CalculateDamage(HandRankType.OnePair, selectedCards),
+                selectedCards);
 
         return new HandResult(HandRankType.HighCard,
-            HandResult.GetBaseDamage(HandRankType.HighCard), selectedCards);
+            HandResult.CalculateDamage(HandRankType.HighCard, selectedCards),
+            selectedCards);
     }
 
     // 로얄 플러시: 같은 문양 10, J, Q, K, A (정확히 5장)
@@ -67,7 +77,7 @@ public class HandEvaluator
         return IsFlush(cards) && IsStraight(cards);
     }
 
-    // 포카드: 같은 숫자 4장 (4장 이상)
+    // 포카드: 같은 숫자 4장
     private static bool IsFourOfAKind(List<CardData> cards)
     {
         if (cards.Count < 4) return false;
@@ -105,7 +115,7 @@ public class HandEvaluator
         return true;
     }
 
-    // 트리플: 같은 숫자 3장 (3장 이상)
+    // 트리플: 같은 숫자 3장
     private static bool IsThreeOfAKind(List<CardData> cards)
     {
         if (cards.Count < 3) return false;
@@ -113,7 +123,7 @@ public class HandEvaluator
                     .Any(g => g.Count() >= 3);
     }
 
-    // 투페어: 페어 2개 (4장 이상)
+    // 투페어: 페어 2개
     private static bool IsTwoPair(List<CardData> cards)
     {
         if (cards.Count < 4) return false;
@@ -121,7 +131,7 @@ public class HandEvaluator
                     .Count(g => g.Count() >= 2) >= 2;
     }
 
-    // 원페어: 같은 숫자 2장 (2장 이상)
+    // 원페어: 같은 숫자 2장
     private static bool IsOnePair(List<CardData> cards)
     {
         if (cards.Count < 2) return false;
