@@ -68,8 +68,12 @@
     <Compile Include="Assets\Script\Card\CardDealAnimator.cs" />
     <Compile Include="Assets\Script\Card\CardDrawer.cs" />
     <Compile Include="Assets\Script\CardClick.cs" />
+    <Compile Include="Assets\Script\Battle\MonsterEncounter.cs" />
+    <Compile Include="Assets\Script\Battle\MonsterSpawner.cs" />
+    <Compile Include="Assets\Script\Battle\EncounterTable.cs" />
     <Compile Include="Assets\Script\Battle\Relic.cs" />
     <Compile Include="Assets\Script\Battle\DamageEffect.cs" />
+    <Compile Include="Assets\Script\Battle\PlayManager.cs" />
     <Compile Include="Assets\Script\Card\HandResult.cs" />
     <Compile Include="Assets\Script\CardTurn.cs" />
     <Compile Include="Assets\Script\GoldManager.cs" />
@@ -88,8 +92,10 @@
     <Compile Include="Assets\Script\Battle\Effect.cs" />
     <Compile Include="Assets\Script\Card\CardBundle.cs" />
     <Compile Include="Assets\Script\Battle\GameManager.cs" />
+    <Compile Include="Assets\Script\Battle\SpawnManager.cs" />
     <Compile Include="Assets\Script\CardNotifier.cs" />
     <Compile Include="Assets\Script\CardSelectionManager.cs" />
+    <Compile Include="Assets\Script\Battle\GoldUI.cs" />
     <Compile Include="Assets\Script\Card\SuitType.cs" />
     <Compile Include="Assets\Script\Card\CardView.cs" />
     <Compile Include="Assets\Script\Card\HandEvaluator.cs" />

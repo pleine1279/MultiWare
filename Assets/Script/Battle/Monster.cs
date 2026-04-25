@@ -6,10 +6,23 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 {
     public MonsterData Data;
     private int currentHP;
-
-    void Awake()
+    private int monsterGold;
+    void Awake() 
     {
-        currentHP = Data.maxHP;
+        // Data가 이미 있으면 초기화 (인스펙터에서 직접 할당한 경우)
+        if (Data != null)
+        {
+            currentHP = Data.maxHP;
+            monsterGold = Data.gold;
+        }
+
+
+    }
+    public void Initialize(MonsterData data)
+    {
+        Data = data;
+        currentHP = data.maxHP;
+        monsterGold = data.gold;
     }
 
     public void TakeDamage(float damage)
@@ -100,6 +113,9 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
     void Die()
     {
         Debug.Log("몬스터 사망!");
+        SpawnManager.Instance.OnMonsterDied(this);
         Destroy(gameObject);
+        Player.Instance.AddGold(monsterGold);
     }
+
 }

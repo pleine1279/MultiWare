@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c9398f95b3a834a95ff14a25aaa92a, type: 3}
+  m_Name: Encounter
+  m_EditorClassIdentifier: 
+  encounterName: 
+  monsterPrefabSlots:
+  - {fileID: 780495344109137746, guid: ebd68376c12ad494199b5e5cd537f8cd, type: 3}
+  - {fileID: 780495344109137746, guid: ebd68376c12ad494199b5e5cd537f8cd, type: 3}
+  - {fileID: 780495344109137746, guid: ebd68376c12ad494199b5e5cd537f8cd, type: 3}
