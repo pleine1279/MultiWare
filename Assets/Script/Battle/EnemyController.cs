@@ -4,33 +4,63 @@ using System.Collections;
 public class EnemyController : MonoBehaviour
 {
     public Player player;
-    public float monsterdamage;
+    private MonsterData data;
+    private int patternIndex = 0; // 현재 패턴 인덱스
 
     private void Start()
     {
         player = FindAnyObjectByType<Player>();
         if (player == null)
-            Debug.LogError($"{gameObject.name}: Player를 찾을 수 없습니다.");
+            Debug.LogError($"[{gameObject.name}] Player를 찾을 수 없습니다!");
 
-        // Data는 Monster에서 직접 가져오기
         Monster monster = GetComponent<Monster>();
         if (monster != null && monster.Data != null)
-            monsterdamage = monster.Data.attackDamage;
+            data = monster.Data;
         else
-            Debug.LogError($"[{gameObject.name}] Monster 또는 MonsterData가 없습니다!");
+            Debug.LogError($"[{gameObject.name}] MonsterData가 없습니다!");
     }
 
     public IEnumerator EnemyAction()
     {
-        Debug.Log($"[{gameObject.name}] 공격 시작!");
-        
-        yield return new WaitForSeconds(1f); //몬스터 공격 시간용
+        if (data == null || data.actionPattern.Count == 0)
+        {
+            Debug.LogError($"[{gameObject.name}] 패턴이 없습니다!");
+            yield break;
+        }
 
-        DamageEffect damage = new DamageEffect(monsterdamage);
-        damage.Apply(player);
-        Debug.Log($"[{gameObject.name}] Player에게 {monsterdamage} 데미지!");
+        // 현재 턴 패턴 가져오기
+        MonsterAction action = data.actionPattern[patternIndex];
 
-        yield return new WaitForSeconds(0.5f); //다음 공격까지 살짝 대기
-        Debug.Log($"[{gameObject.name}] 공격 끝!");
+        switch (action.actionType)
+        {
+            case ActionType.Attack:
+                yield return StartCoroutine(DoAttack(action.value));
+                break;
+
+            case ActionType.Defend:
+                yield return StartCoroutine(DoDefend(action.value));
+                break;
+        }
+
+        // 다음 패턴으로 (끝나면 처음으로)
+        patternIndex = (patternIndex + 1) % data.actionPattern.Count;
+    }
+
+    IEnumerator DoAttack(float damage)
+    {
+        Debug.Log($"[{gameObject.name}] 공격! {damage} 데미지");
+        yield return new WaitForSeconds(1f);
+        DamageEffect dmg = new DamageEffect(damage);
+        dmg.Apply(player);
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    IEnumerator DoDefend(float amount)
+    {
+        Debug.Log($"[{gameObject.name}] 방어! {amount} 방어력");
+        yield return new WaitForSeconds(1f);
+        // 방어 로직 (Player의 다음 공격 데미지 감소 등)
+        GetComponent<Monster>().AddDefense((int)amount);
+        yield return new WaitForSeconds(0.5f);
     }
 }

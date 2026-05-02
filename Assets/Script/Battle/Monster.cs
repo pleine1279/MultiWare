@@ -7,6 +7,7 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
     public MonsterData Data;
     private int currentHP;
     private int monsterGold;
+    private int defense = 0;
     void Awake() 
     {
         // Data가 이미 있으면 초기화 (인스펙터에서 직접 할당한 경우)
@@ -15,8 +16,11 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             currentHP = Data.maxHP;
             monsterGold = Data.gold;
         }
-
-
+    }
+    public void AddDefense(int amount)
+    {
+        defense += amount;
+        Debug.Log($"[{gameObject.name}] 방어력 {defense} 획득!");
     }
     public void Initialize(MonsterData data)
     {
@@ -27,8 +31,10 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 
     public void TakeDamage(float damage)
     {
-        currentHP -= (int)damage;
-        Debug.Log($"몬스터 HP: {currentHP}");
+        int finalDamage = Mathf.Max(0, (int)damage - defense);
+        currentHP -= finalDamage;
+        defense = 0; // 방어력 턴마다 초기화
+        Debug.Log($"[{gameObject.name}] {finalDamage} 데미지! HP: {currentHP}");
     }
 
     public void OnDrop(PointerEventData eventData)

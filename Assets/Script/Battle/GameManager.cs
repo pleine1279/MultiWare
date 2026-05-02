@@ -20,11 +20,12 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("BattleScene");
+        SceneManager.LoadScene("BattleScene MonsterSpawn"); // 여기에 전투씬 이름 정확하게
     }
 
     public void OnVictory()
     {
+        // 추후 승리 시 할 행동 추가
         Debug.Log("전투 승리! 상점으로 이동");
         SceneManager.LoadScene("ShopScene"); // ← ShopScene 이름 일단 예시로 적어놈
     }
