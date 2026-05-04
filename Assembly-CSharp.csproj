@@ -61,7 +61,9 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.69f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Battle\Relic\BonusByHandRankReli.cs" />
     <Compile Include="Assets\Script\Card\DeckManager.cs" />
+    <Compile Include="Assets\Script\Battle\Relic\RemoveSpecificNumbersRelic.cs" />
     <Compile Include="Assets\Script\Battle\IEffectTarget.cs" />
     <Compile Include="Assets\Script\Card\HandManager.cs" />
     <Compile Include="Assets\Script\Card\CardData.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Assets\Script\Battle\PlayManager.cs" />
     <Compile Include="Assets\Script\Card\HandResult.cs" />
     <Compile Include="Assets\Script\CardTurn.cs" />
+    <Compile Include="Assets\Script\Battle\Relic\RelicManager.cs" />
     <Compile Include="Assets\Script\GoldManager.cs" />
     <Compile Include="Assets\Script\Battle\Monster.cs" />
     <Compile Include="Assets\Script\Battle\TurnManager.cs" />
@@ -88,10 +91,13 @@
     <Compile Include="Assets\Script\Battle\EnemyController.cs" />
     <Compile Include="Assets\Script\GameState.cs" />
     <Compile Include="Assets\Script\Card\CardSelectManager.cs" />
+    <Compile Include="Assets\Script\Battle\Relic\RemoveSuitRelic.cs" />
+    <Compile Include="Assets\Script\Battle\Relic\RelicTestHelper.cs" />
     <Compile Include="Assets\Script\Battle\Effect.cs" />
     <Compile Include="Assets\Script\Card\CardBundle.cs" />
     <Compile Include="Assets\Script\Battle\GameManager.cs" />
     <Compile Include="Assets\Script\Battle\SpawnManager.cs" />
+    <Compile Include="Assets\Script\Battle\Relic\RemoveSpecificCardRelic.cs" />
     <Compile Include="Assets\Script\CardNotifier.cs" />
     <Compile Include="Assets\Script\Battle\MonsterAction.cs" />
     <Compile Include="Assets\Script\CardSelectionManager.cs" />

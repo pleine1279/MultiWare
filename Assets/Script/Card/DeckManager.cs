@@ -66,4 +66,33 @@ public class DeckManager : MonoBehaviour
     {
         return deck.Count;
     }
+    // 특정 숫자 이하 카드 제거 (예: 4 이하 → 2,3,4 제거)
+    public void RemoveCardsBelow(int number)
+    {
+        int removed = allCards.RemoveAll(card => card.cardNumber <= number);
+        deck.RemoveAll(card => card.cardNumber <= number);
+        Debug.Log($"{number} 이하 카드 {removed}장 제거됨");
+    }
+
+    // 특정 숫자만 제거
+    public void RemoveCardsByNumber(List<int> numbers)
+    {
+        int removed = allCards.RemoveAll(card => numbers.Contains(card.cardNumber));
+        deck.RemoveAll(card => numbers.Contains(card.cardNumber));
+        Debug.Log($"{string.Join(", ", numbers)} 카드 {removed}장 제거됨");
+    }
+
+    // 특정 무늬 제거
+    public void RemoveCardsBySuit(SuitType suit)
+    {
+        int removed = allCards.RemoveAll(card => card.suit == suit);
+        deck.RemoveAll(card => card.suit == suit);
+        Debug.Log($"{suit} 무늬 카드 {removed}장 제거됨");
+    }
+    public void RemoveCardBySuitAndNumber(SuitType suit, int number)
+    {
+        int removed = allCards.RemoveAll(card => card.suit == suit && card.cardNumber == number);
+        deck.RemoveAll(card => card.suit == suit && card.cardNumber == number);
+        Debug.Log($"{suit} {number} 카드 {removed}장 제거됨");
+    }
 }

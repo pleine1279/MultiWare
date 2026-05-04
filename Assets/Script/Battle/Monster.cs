@@ -48,6 +48,10 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
                 bundle.cardDataList,
                 bundle.handResult.baseDamage
             );
+            foreach (var relic in Player.Instance.relics)
+            {
+                relic.OnAttack(Player.Instance, bundle.cardDataList, this, bundle.handResult);
+            }
 
             TakeDamage(totalDamage);
             Debug.Log($"몬스터에게 {totalDamage} 데미지!");
