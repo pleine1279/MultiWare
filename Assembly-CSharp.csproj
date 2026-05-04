@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\Card\DeckManager.cs" />
+    <Compile Include="Assets\Script\Card\RerollZone.cs" />
     <Compile Include="Assets\Script\Battle\IEffectTarget.cs" />
     <Compile Include="Assets\Script\Card\HandManager.cs" />
     <Compile Include="Assets\Script\Card\CardData.cs" />
@@ -87,8 +88,8 @@
     <Compile Include="Assets\Script\Battle\EnemyController.cs" />
     <Compile Include="Assets\Script\GameState.cs" />
     <Compile Include="Assets\Script\Card\CardSelectManager.cs" />
+    <Compile Include="Assets\Script\Card\CardRerollManager.cs" />
     <Compile Include="Assets\Script\Battle\Effect.cs" />
-    <Compile Include="Assets\Script\Card\CardBundle.cs" />
     <Compile Include="Assets\Script\Battle\GameManager.cs" />
     <Compile Include="Assets\Script\CardNotifier.cs" />
     <Compile Include="Assets\Script\CardSelectionManager.cs" />

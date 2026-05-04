@@ -20,28 +20,7 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 
     public void OnDrop(PointerEventData eventData)
     {
-        CardBundle bundle = eventData.pointerDrag?.GetComponent<CardBundle>();
-        if (bundle != null)
-        {
-            Debug.Log($"뭉탱이 드롭! 족보: {bundle.handResult.GetRankName()}");
-
-            // 최종 데미지 계산
-            int finalDamage = CalculateFinalDamage(
-                bundle.cardDataList,
-                bundle.handResult
-            );
-
-            TakeDamage(finalDamage);
-            Debug.Log($"몬스터에게 {finalDamage} 데미지!");
-
-            // 문양 추가 효과 적용
-            ApplySuitEffects(bundle.cardDataList);
-
-            bundle.isDroppedOnMonster = true;
-
-            if (currentHP <= 0)
-                Die();
-        }
+        // CardBundle 방식 제거 - CardView 드래그 방식으로 변경됨
     }
 
     // 최종 데미지 계산
@@ -102,7 +81,6 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             }
         }
 
-        // 5장 기준 비율 계산
         float heartRatio = (float)heartCount / 5f;
         float diamondRatio = (float)diamondCount / 5f;
         float cloverRatio = (float)cloverCount / 5f;
@@ -148,9 +126,7 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
 
         // 클로버: 버프/디버프
         if (cloverCount > 0)
-        {
             ApplyCloverEffect(cloverRatio);
-        }
     }
 
     // 클로버 효과 적용
@@ -158,7 +134,6 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
     {
         if (ratio <= 0) return;
 
-        // 20% → 자동 약화 디버프
         if (ratio < 0.4f)
         {
             Debug.Log("클로버 약화: 적 공격력 -20% (2턴) 자동 발동!");
@@ -166,32 +141,31 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             return;
         }
 
-        // 40% 이상 → 선택창 표시
         string debuffName = "", debuffDesc = "";
         string buffName = "", buffDesc = "";
 
-        if (ratio < 0.6f) // 40%
+        if (ratio < 0.6f)
         {
             debuffName = "Expose";
             debuffDesc = "Enemy DEF -20% (2 turns)";
             buffName = "Inspiration";
             buffDesc = "Draw +1 card now";
         }
-        else if (ratio < 0.8f) // 60%
+        else if (ratio < 0.8f)
         {
             debuffName = "Panic";
             debuffDesc = "Enemy acts randomly (1 turn)";
             buffName = "Focus";
             buffDesc = "Next hand DMG +40%";
         }
-        else if (ratio < 1.0f) // 80%
+        else if (ratio < 1.0f)
         {
             debuffName = "Slow";
             debuffDesc = "Enemy action delayed 1 turn";
             buffName = "Lucky";
             buffDesc = "Draw +2 cards now";
         }
-        else // 100%
+        else
         {
             debuffName = "Curse";
             debuffDesc = "2 random debuffs applied";
@@ -199,7 +173,6 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             buffDesc = "Take 0 damage this turn";
         }
 
-        // 선택창 표시
         if (CloverChoiceUI.Instance != null)
         {
             CloverChoiceUI.Instance.ShowChoice(
@@ -211,7 +184,6 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
         }
     }
 
-    // 디버프 적용
     void ApplyDebuff(float ratio)
     {
         if (BattleManager.Instance == null) return;
@@ -238,7 +210,6 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
         }
         else
         {
-            // 저주: 랜덤 디버프 2종
             int[] debuffs = { 0, 1, 2, 3 };
             System.Random rng = new System.Random();
             int first = debuffs[rng.Next(debuffs.Length)];
@@ -292,6 +263,19 @@ public class Monster : MonoBehaviour, IDropHandler, IEffectTarget
             if (BattleManager.Instance != null)
                 BattleManager.Instance.ApplyInvincible();
         }
+    }
+
+    // CardView 드래그로 데미지 받는 함수
+    public void ReceiveCardBundle(HandResult result, List<CardData> cards)
+    {
+        int finalDamage = CalculateFinalDamage(cards, result);
+        TakeDamage(finalDamage);
+        Debug.Log($"몬스터에게 {finalDamage} 데미지!");
+
+        ApplySuitEffects(cards);
+
+        if (currentHP <= 0)
+            Die();
     }
 
     void Die()

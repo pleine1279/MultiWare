@@ -34,18 +34,6 @@ public class TurnManager : MonoBehaviour
         if (currentState != GameState.PlayerTurn)
             return;
 
-        // 남아있는 CardBundle 확인
-        CardBundle[] bundles = FindObjectsByType<CardBundle>(FindObjectsSortMode.None);
-        if (bundles.Length > 0)
-        {
-            Debug.Log("몬스터에게 카드를 먼저 사용하세요!");
-
-            // UI 메시지 표시
-            if (CardSelectManager.Instance != null)
-                CardSelectManager.Instance.ShowMessage("Use card on monster first!");
-            return;
-        }
-
         StartCoroutine(EnemyTurnRoutine());
     }
 
@@ -87,9 +75,9 @@ public class TurnManager : MonoBehaviour
         SetInputBlock(false);
         endTurnButton.interactable = true;
 
-        // 현재 손에 있는 카드 수 확인
+        // 7장 기준으로 변경
         int currentCount = cardFan.GetCurrentCardCount();
-        int drawCount = 5 - currentCount;
+        int drawCount = 7 - currentCount;  // ← 5 → 7로 변경
 
         Debug.Log($"현재 카드: {currentCount}장 / 드로우할 카드: {drawCount}장");
 

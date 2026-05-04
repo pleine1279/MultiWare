@@ -18,7 +18,9 @@ public class GoldManager : MonoBehaviour
 
     private void Start()
     {
+        currentGold = 30;  // °Á Ω√¿€ ∞ÒµÂ 30G
         UpdateGoldUI();
+        Debug.Log($"Ω√¿€ ∞ÒµÂ: {currentGold}G");
     }
 
     // ∞ÒµÂ »πµÊ

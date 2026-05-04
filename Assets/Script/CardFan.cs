@@ -94,10 +94,9 @@ public class CardFan : MonoBehaviour
 
     public void DrawStartingHand()
     {
-        cardCount = 5;
+        cardCount = 7;  // ← 5 → 7로 변경
         CreateCards(cardCount);
     }
-
     // 현재 남아있는 카드 수 반환
     public int GetCurrentCardCount()
     {
